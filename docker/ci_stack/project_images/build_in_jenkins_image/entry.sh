@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 if [ -z "$GIT_URL" ]; then
 	echo "please provide the GIT_URL environmental variable to the container" 
 	exit 1

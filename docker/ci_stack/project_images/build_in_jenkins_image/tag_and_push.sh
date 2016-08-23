@@ -1,0 +1,2 @@
+docker tag build_in_jenkins_image osboxes:5000/build_in_jenkins_image:latest
+docker push osboxes:5000/build_in_jenkins_image:latest
