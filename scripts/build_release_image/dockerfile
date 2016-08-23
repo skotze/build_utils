@@ -1,0 +1,24 @@
+FROM java8_base:latest
+MAINTAINER Stephan Kotze
+
+ENV TERM xterm-256color
+ARG archive
+COPY ${archive}.tgz .
+
+RUN \
+	tar -xzf ${archive}.tgz && \
+    rm -f ${archive}.tgz
+
+RUN echo "#!/bin/bash" > /bin/entry.sh 
+RUN	echo "exec /${archive}/bin/play-java-intro -debug -Dplay.crypto.secret=\$PLAY_SECRET" >> /bin/entry.sh 
+RUN chmod +x /bin/entry.sh
+
+EXPOSE 9000
+
+# Set the default command to execute
+# when creating a new container
+CMD ["/bin/entry.sh"]
+
+
+
+
