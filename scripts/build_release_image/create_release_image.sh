@@ -12,7 +12,7 @@
 #./create_release_image.sh $WORKSPACE/target/universal play-java-intro:1.0-SNAPSHOT
 
 
-TGZ_ARTEFACT=$(ls $1/*.tgz)
+TGZ_ARTEFACT=$(ls $1/*.tgz | xargs -n1 basename)
 RELEASE_ARTEFACT_NAME=$(echo $TGZ_ARTEFACT | sed s/\.tgz\//)
 
 set -x
