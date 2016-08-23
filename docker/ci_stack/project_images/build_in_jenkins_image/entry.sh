@@ -10,8 +10,9 @@ if [ -z "$GIT_REPO" ]; then
 fi
 echo "contaner env:"
 env
+mkdir build_dir
 cd /build_dir
-git clone --progress $GIT_URL$GIT_REPO.git 
+git clone --depth=1 --progress $GIT_URL$GIT_REPO.git 
 cd $GIT_REPO
 sbt $1 $2
 echo "remove any stale artefacts from previous runs of the container that were not cleaned up by running docker rm (removing $TARGET_DIRECTORY/*)"

@@ -15,9 +15,6 @@ RUN \
     rm -f docker-$DOCKER_VERSION.tgz && \
 	echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
-COPY scripts /scripts
-RUN chmod +x /scripts/* && chown jenkins /scripts/*
-
 USER jenkins
 
 
