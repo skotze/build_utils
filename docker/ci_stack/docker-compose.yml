@@ -15,7 +15,7 @@ services:
    networks:
     ci_stack_net:
        aliases: 
-         - ${JENKINS_CONTAINER_HOSTNAME}
+         - ${GITLAB_CONTAINER_HOSTNAME}
    volumes_from:
     - ci_stack_volume
    environment:
@@ -56,6 +56,7 @@ services:
     - ${REGISTRY_PORT}:5000
    volumes_from:
     - ci_stack_volume
+   restart: always
 
   ci_stack_volume:
     container_name: ${CI_STACK_VOLUME_NAME}
