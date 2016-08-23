@@ -1,0 +1,26 @@
+FROM java8_base:latest
+MAINTAINER Stephan Kotze
+
+ENV TERM xterm-256color
+
+COPY play-java-intro-1.0-SNAPSHOT.tgz .
+
+RUN \
+	tar -xzf play-java-intro-1.0-SNAPSHOT.tgz && \
+#	mv play-java-intro-1.0-SNAPSHOT play-java-intro && \
+	rm -f play-java-intro-1.0-SNAPSHOT.tgz
+
+
+# install entrypoint script
+COPY entry.sh /bin/entry.sh
+RUN chmod +x /bin/entry.sh
+
+EXPOSE 9000
+
+# Set the default command to execute
+# when creating a new container
+CMD ["/bin/entry.sh"]
+
+
+
+

@@ -1,0 +1,24 @@
+FROM jenkins:2.7.2
+MAINTAINER Stephan Kotze
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+USER root
+
+RUN \
+	DOCKER_VERSION="1.12.1" && \
+	apt-get update && \
+	apt-get install -qqy curl apt-transport-https sudo && \
+	wget -qO- https://test.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz > docker-$DOCKER_VERSION.tgz && \
+	tar -xvzf docker-$DOCKER_VERSION.tgz && \
+ 	mv docker/* /usr/bin/ && \
+    rm -f docker-$DOCKER_VERSION.tgz && \
+	echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+COPY scripts /scripts
+RUN chmod +x /scripts/* && chown jenkins /scripts/*
+
+USER jenkins
+
+
+

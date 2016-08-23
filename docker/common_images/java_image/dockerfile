@@ -1,0 +1,23 @@
+FROM ubuntu:14.04
+MAINTAINER Stephan Kotze
+
+RUN \
+  TERM="xterm-256color" && \
+  APT_OPTS="-y -o apt::install-recomme‌​nds=false -o apt::install-suggests=false" && \
+  echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" >> /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get install $APT_OPTS software-properties-common 
+
+#Install java8
+RUN \
+  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+  add-apt-repository ppa:webupd8team/java && \
+  apt-get update && \
+  apt-get install -y oracle-java8-installer
+
+# Set the default command to execute
+# when creating a new container
+CMD ["true"]
+
+
+

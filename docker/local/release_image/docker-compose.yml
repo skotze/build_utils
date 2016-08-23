@@ -1,0 +1,13 @@
+version: '2'
+services:
+  release_container:
+    image: releaseimage:latest
+    expose:
+        - 9000
+    environment:
+        - PLAY_SECRET="hello"
+    ports:
+        - 80:9000
+
+
+

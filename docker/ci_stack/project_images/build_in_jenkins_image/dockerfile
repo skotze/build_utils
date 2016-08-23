@@ -1,0 +1,72 @@
+FROM java8_base:latest
+MAINTAINER Stephan Kotze
+
+ENV \
+  SCALA_VERSION="2.11.8" \
+  SBT_VERSION="0.13.11" \
+  NODE_JS_VERSION="node_6.x" \
+  NODE_JS_DISTRO="xenial" \
+  TERM="xterm-256color" \
+  APT_OPTS="-y -o apt::install-recommends=false -o apt::install-suggests=false" \
+  TARGET_DIRECTORY="/target"
+
+# Install Scala
+RUN \  
+  wget -qO- http://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
+  echo >> /root/.bashrc && \
+  echo 'export PATH=~/scala-$SCALA_VERSION/bin:$PATH' >> /root/.bashrc
+  
+# Install sbt
+RUN \
+  wget -qO- http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb > sbt-$SBT_VERSION.deb && \
+  dpkg -i sbt-$SBT_VERSION.deb && \
+  rm sbt-$SBT_VERSION.deb && \
+  apt-get update && \
+  apt-get install sbt && \
+  sbt sbtVersion
+
+# Install git
+RUN apt-get install $APT_OPTS git 
+
+# Install apt-transport-https
+RUN apt-get $APT_OPTS install apt-transport-https
+
+
+# Install node.js (for faster compilation) does not work for Yakkity.
+RUN \
+  wget -qO- https://deb.nodesource.com/setup_6.x > /setup_6.x && \
+  bash /setup_6.x && \
+  apt-get install $APT_OPTS nodejs
+
+
+VOLUME /ivy_cache
+VOLUME /target
+
+ENV JENKINS_HOME /var/jenkins_home
+ENV JENKINS_SLAVE_AGENT_PORT 50000
+
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+
+# Jenkins is run with user `jenkins`, uid = 1000
+# If you bind mount a volume from the host or a data container, 
+# ensure you use the same uid
+RUN groupadd -g ${gid} ${group} && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
+
+RUN mkdir build_dir && chown jenkins build_dir
+
+# install entrypoint script
+COPY entry.sh /bin/entry.sh
+RUN chmod +x /bin/entry.sh
+
+USER jenkins
+
+# Set the default command to execute
+# when creating a new container
+CMD ["/bin/entry.sh", "-ivy /ivy_cache", "test universal:packageZipTarball"]
+
+
+
+

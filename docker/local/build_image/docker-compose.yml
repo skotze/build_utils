@@ -1,0 +1,16 @@
+version: '2'
+services:
+  build_container:
+    image: build:latest
+    volumes_from:
+    - build_volume
+    
+  build_volume:
+    image: build:latest
+    entrypoint: "true"
+    volumes:
+    - /home/osboxes/my_ivy_cache:/ivy_cache
+    - /home/osboxes/target:/target
+
+
+
