@@ -18,7 +18,7 @@ RELEASE_ARTEFACT_NAME=$(echo $TGZ_ARTEFACT | sed s/\.tgz\//)
 set -x
 sudo docker pull $DOCKERHOST_HOSTNAME:$REGISTRY_PORT/java8_base:latest
 sudo docker tag $DOCKERHOST_HOSTNAME:$REGISTRY_PORT/java8_base:latest java8_base:latest
-cp $1/TGZ_ARTEFACT .
+cp $1/$TGZ_ARTEFACT .
 
 sudo docker build --build-arg archive=$RELEASE_ARTEFACT_NAME -t $2 .
 
