@@ -1,1 +1,0 @@
-exec docker run -i --rm --volumes-from cache -p 80:9000 -e PLAY_SECRET="hello" --name release_container releaseimage 
