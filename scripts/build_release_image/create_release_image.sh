@@ -9,8 +9,8 @@
 # ARTEFACT_DIR=$WORKSPACE/target/universal
 # ARTEFACT_NAME=$(ls $ARTEFACT_DIR/*.tgz | xargs -n1 basename)
 # ARTEFACT_VERSION=$(echo $ARTEFACT_NAME | sed s/\.tgz\// | sed s/$PROJECT_NAME// | cut -c 2-)
-# cd $WORKSPACE/build_utils/scripts/build_release_image/
-# ./create_release_image.sh $WORKSPACE/target/universal $DOCKER_IMAGE_TAG
+# cd $WORKSPACE/build_utils/docker/ci_stack/project_images/release_image
+# $WORKSPACE/build_utils/scripts/build_release_image/create_release_image.sh $WORKSPACE/target/universal $DOCKER_IMAGE_TAG
 # #appends repo details for push
 # $WORKSPACE/build_utils/scripts/docker_utils/docker_tag.sh $DOCKER_IMAGE_TAG $DOCKER_IMAGE_TAG
 # $WORKSPACE/build_utils/scripts/docker_utils/docker_tag.sh $DOCKER_IMAGE_TAG play-java-intro:$ARTEFACT_VERSION
@@ -19,7 +19,6 @@
 # $WORKSPACE/build_utils/scripts/docker_utils/docker_push.sh $DOCKER_IMAGE_TAG
 # $WORKSPACE/build_utils/scripts/docker_utils/docker_push.sh play-java-intro:$ARTEFACT_VERSION
 # $WORKSPACE/build_utils/scripts/docker_utils/docker_push.sh play-java-intro:latest
-
 
 
 
