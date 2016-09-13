@@ -1,0 +1,24 @@
+# docker run -p xxxxx:xxxxxx -p xxxxxx:xxxxx -p xxxxxx:xxxxxxx -it jboss63_base:latest
+
+FROM java8_base:latest
+
+# https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=32483&product=appplatform
+ADD files/jboss-eap-6.3.0.zip /tmp/
+# Add EAP_HOME environment variable, to easily upgrade the script for different EAP versions
+ENV EAP_HOME /opt/jboss/jboss-eap-6.3
+
+RUN APT_OPTS="-y -o apt::install-recomme‌​nds=false -o apt::install-suggests=false" ;\
+	apt-get update ;\
+	apt-get install $APT_OPTS unzip ;\
+	unzip /tmp/jboss-eap-6.3.0.zip -d /opt/jboss ;\
+	${EAP_HOME}/bin/add-user.sh admin IAmAdmin! --silent ;\
+	echo "JAVA_OPTS=\"\$JAVA_OPTS -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0\"" >> ${EAP_HOME}/bin/standalone.conf
+
+
+# Add volume if you want to externalize logs
+VOLUME ${EAP_HOME}/standalone/logs
+
+EXPOSE 9990 9999 8080 8787
+
+ENTRYPOINT ["/opt/jboss/jboss-eap-6.3/bin/standalone.sh"]
+CMD []
